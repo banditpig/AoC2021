@@ -14,18 +14,14 @@ module Day1 where
 import InputParsers
 import Prelude
 
-diffs :: (Num a) => [a] -> [a]
-diffs xs@(_ : xxs) = zipWith (-) xxs xs
-
-window :: (Num a) => [a] -> [a]
-window (a : b : c : xxs) = (a + b + c) : window (b : c : xxs)
-window _ = []
+offsetPairs :: Int -> (a -> a -> b) -> [a] -> [b]
+offsetPairs n combine xs = zipWith (flip combine) xs (drop n xs)
 
 part1 :: (Num a, Ord a) => [a] -> Int
-part1 = length . filter (> 0) . diffs
+part1  = length . filter (> 0) . offsetPairs 1 (-) 
 
 part2 :: (Num a, Ord a) => [a] -> Int
-part2 = length . filter (> 0) . diffs . window
+part2  = length . filter (> 0) . offsetPairs 3 (-) 
 
 day1 :: IO ()
 day1 = do
