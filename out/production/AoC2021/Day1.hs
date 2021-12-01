@@ -12,7 +12,6 @@
 module Day1 where
 import Prelude
 import InputParsers
-import Control.Monad (liftM)
 
 diffs :: (Num a) => [a] -> [a]
 diffs xs@(_:xxs) = zipWith (-) xxs xs
@@ -27,8 +26,16 @@ part1  = length . filter ( > 0 ) . diffs
 part2 :: (Num a, Ord a) => [a]  -> Int
 part2 = length . filter ( > 0) . diffs . window
 
+day1 :: IO ()
 day1 = do
- nums <-  withData "data/Day1.txt" parserListInt
- print $ part1 nums
- print $ part2 nums
- 
+  withData "data/Day1.txt" parserListInt >>= (\x -> do 
+                print . part1 $ x
+                print . part2 $ x
+                )
+--  withData "data/Day1.txt" parserListInt >>= print . part1
+--  withData "data/Day1.txt" parserListInt >>= print . part2 
+--day1 = do
+-- nums <-  withData "data/Day1.txt" parserListInt
+-- print $ part1 nums
+-- print $ part2 nums
+--
