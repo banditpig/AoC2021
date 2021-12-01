@@ -12,7 +12,6 @@
 module Day1 where
 import Prelude
 import InputParsers
-import Control.Monad (liftM)
 
 diffs :: (Num a) => [a] -> [a]
 diffs xs@(_:xxs) = zipWith (-) xxs xs
