@@ -35,6 +35,10 @@ int = char '-' *> pure ((-1)*) <*> natural <|> char '+' *> pure ((1)*) <*> natur
 natural :: Parser Int
 natural = pure read <*> many1 digit
 
+keyWord :: String -> Parser String
+keyWord = string
+
+
 
 commaSp :: Parser String
 commaSp = string ", "
