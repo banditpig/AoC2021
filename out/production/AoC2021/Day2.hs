@@ -7,6 +7,7 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE DeriveAnyClass #-}
 module Day2 where
 
 import Prelude
@@ -14,10 +15,10 @@ import InputParsers
 import Text.Parsec
 import Text.Parsec.String
 
-
+-- x, y and aim
 type XYA a = (a, a, a)
 data UDF  a    = U a | D a | F a deriving Show
-
+  
 runCmdP1 :: (Num a) => XYA a -> UDF a ->  XYA a
 runCmdP1 (x, y, _) udf  = case udf of
   U n ->  (x, y - n, 0)
