@@ -37,6 +37,10 @@ countOnes (v, w) (x, y) = if x == '1' then ('1', w + 1) else ('1', w)
 flipBits :: String -> String
 flipBits   = fmap (\b -> if b =='1' then '0' else '1') 
 
+--bitAtIx :: BinStr -> Int -> Char
+bitAtIx :: [a] -> Int -> a
+bitAtIx bs ix = (!!) bs ix
+
 part1 :: [BinStr] -> Int
 part1 bs = gamma * epsilon
   where

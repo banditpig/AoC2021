@@ -7,18 +7,14 @@ module InputParsers where
   
 import Data.Text (Text)
 import Data.Char
-import Text.Parsec.Char as P
 import Text.Parsec
 import Text.Parsec.String
 import Prelude
 
 withData :: FilePath -> Parser a -> IO a
 withData path p = do
-  result <- parseFromFile (p <* eof) path
-  either (error . show) return result
-
-parserLine :: Parser [String]
-parserLine = many ((many1 P.anyChar) <* newline)
+  result <- parseFromFile (p ) path
+  either (error . show) pure result
 
 parserListString :: Parser [[String]]
 parserListString = many1 (sepBy1 (many1 lower) (char ' ') <* newline)
@@ -26,6 +22,7 @@ parserListString = many1 (sepBy1 (many1 lower) (char ' ') <* newline)
 parserListListInt :: Parser [[Int]]
 parserListListInt = many1 (sepBy1 number (char '\t') <* newline)
     where
+      
         number :: Parser Int
         number = read <$> many1 digit
 
@@ -40,6 +37,8 @@ natural = pure read <*> many1 digit
 
 keyWord :: String -> Parser String
 keyWord = string
+
+
 
 commaSp :: Parser String
 commaSp = string ", "

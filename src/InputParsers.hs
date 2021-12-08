@@ -13,8 +13,8 @@ import Prelude
 
 withData :: FilePath -> Parser a -> IO a
 withData path p = do
-  result <- parseFromFile (p <* eof) path
-  either (error . show) return result
+  result <- parseFromFile (p ) path
+  either (error . show) pure result
 
 parserListString :: Parser [[String]]
 parserListString = many1 (sepBy1 (many1 lower) (char ' ') <* newline)
