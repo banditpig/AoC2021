@@ -112,10 +112,4 @@ part2 (nmbrs, game) = go nmbrs game []
           
 day4 :: IO ()
 day4 = withData "data/Day4.txt" gameState >>= print . (part1 &&& part1)
---day4 :: IO ()
---day4 = do
---  gs <- withData "data/Day4.txt" gameState
---
---  print (playGame gs)
---  print (playGame2 gs)
 

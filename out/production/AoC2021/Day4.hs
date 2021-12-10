@@ -60,32 +60,7 @@ score n cd = (* n) . sum . catMaybes $ foldr (:) [] cd
 
 removeWinners :: Game (Maybe a)  -> Game (Maybe a) 
 removeWinners (Game cards) = Game (filter (not.winningCard) cards)
-
-playGame :: (Integral a, Num a, Ord a) => ([a], Game (Maybe a)) -> Maybe a
-playGame (nmbrs, game) = go nmbrs game
-  where
-    go [] _ = Nothing
-    go (n : ns) game = winner
-      where
-        game' = markAllCards n game
-        winner = case checkForWinner n game' of
-          Nothing   -> go ns game'
-          Just card -> Just $ score n card
-
-playGame2 :: (Ord a, Num a) => ([a], Game (Maybe a)) -> a
-playGame2 (nmbrs, game) = go nmbrs game []
-  where
-    go [] _ wins = head wins
-    go (n : ns) game wins  = winner
-      where
-        game'  = markAllCards n game
-        winner = case checkForWinner n game' of
-          Nothing   -> go ns (removeWinners game') wins
-          Just card -> go ns (removeWinners game')  ((score n card) : wins) 
-           
-            
-
-
+  
 checkForWinner :: a -> Game (Maybe a) -> Maybe (Card (Maybe a))
 checkForWinner numbr (Game cards) = go numbr cards
   where
@@ -110,14 +85,31 @@ markCard n card = card'
       where
         check Nothing = Nothing
         check (Just i) = if i == n then Nothing else Just i
--- main :: IO ()
-   --main = readFile "input.txt" >>= print . (part1 &&& part2) . prepare
+
+
+part1 :: (Integral a, Num a, Ord a) => ([a], Game (Maybe a)) -> Maybe a
+part1 (nmbrs, game) = go nmbrs game
+  where
+    go [] _ = Nothing
+    go (n : ns) game = winner
+      where
+        game' = markAllCards n game
+        winner = case checkForWinner n game' of
+          Nothing   -> go ns game'
+          Just card -> Just $ score n card
+
+part2 :: (Ord a, Num a) => ([a], Game (Maybe a)) -> a
+part2 (nmbrs, game) = go nmbrs game []
+  where
+    go [] _ wins = head wins
+    go (n : ns) game wins  = winner
+      where
+        game'  = markAllCards n game
+        winner = case checkForWinner n game' of
+          Nothing   -> go ns (removeWinners game') wins
+          Just card -> go ns (removeWinners game')  ((score n card) : wins) 
+           
+          
 day4 :: IO ()
-day4 = withData "data/Day4.txt" gameState >>= print . (playGame &&& playGame2)
---day4 :: IO ()
---day4 = do
---  gs <- withData "data/Day4.txt" gameState
---
---  print (playGame gs)
---  print (playGame2 gs)
+day4 = withData "data/Day4.txt" gameState >>= print . (part1 &&& part1)
 
