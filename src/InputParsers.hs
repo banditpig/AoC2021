@@ -11,6 +11,8 @@ import Text.Parsec
 import Text.Parsec.String
 import Prelude
 
+
+    
 withData :: FilePath -> Parser a -> IO a
 withData path p = do
   result <- parseFromFile (p ) path
