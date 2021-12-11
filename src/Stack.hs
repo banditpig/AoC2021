@@ -24,3 +24,7 @@ push x (Stack xs)= Stack (x:xs)
 pop :: Stack a -> (Maybe a, Stack a)
 pop (Stack []) = (Nothing, Stack [])
 pop (Stack (x:xs)) = (Just x, Stack xs)
+
+drain :: Stack a -> [a]
+drain (Stack []) = []
+drain (Stack (x:xs)) = x: drain (Stack xs) 

@@ -9,7 +9,7 @@ module Day10 where
 
 import Control.Arrow ((&&&))
 import Data.List
-import Data.Maybe (mapMaybe)
+import Data.Maybe (mapMaybe, isNothing)
 import InputParsers
 import Stack
 import Text.Parsec
@@ -57,6 +57,15 @@ cost = \case
   Cbrace -> 1197
   Carrow -> 25137
 
+
+tailCost :: Symbol -> Int
+tailCost = \case
+  Oparen -> 1
+  Osquare -> 2
+  Obrace -> 3
+  Oarrow -> 4
+  _      -> 0
+
 processLine :: [Symbol] -> Maybe Symbol
 processLine ls = go ls empty Nothing
   where
@@ -78,7 +87,21 @@ part1 inp = total
     errs = mapMaybe processLine inp
     total = foldr (\sym acc -> acc + cost sym) 0 errs
 
-part2 = const ()
+stackALine :: [Symbol] -> Stack Symbol
+stackALine lin = go lin empty where
+  go [] st = st
+  go (s:ss)  st
+   | isOpenSymbol s = go ss (push s st)
+   | otherwise = go ss st' where (_, st') = pop st
+
+part2 :: [[Symbol]] -> Int
+part2 inp = midCost   where
+  -- stacks for all ok lines
+  stacks = map stackALine $ filter (isNothing . processLine) inp
+  allTails = map drain stacks
+  costs = sort $ map ( foldl (\acc sym -> acc * 5 + tailCost sym)   0 ) allTails
+  midCost = (!!) costs  ((length costs)  `div` 2)
 
 main :: IO ()
 main = withData "data/Day10.txt" allLines >>= print . (part1 &&& part2)
+
