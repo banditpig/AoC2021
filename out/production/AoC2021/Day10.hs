@@ -64,7 +64,7 @@ tailCost = \case
   Osquare -> 2
   Obrace -> 3
   Oarrow -> 4
-  _      -> 0 
+  _      -> 0
 
 processLine :: [Symbol] -> Maybe Symbol
 processLine ls = go ls empty Nothing
@@ -100,9 +100,7 @@ part2 inp = midCost   where
   stacks = map stackALine $ filter (isNothing . processLine) inp
   allTails = map drain stacks
   costs = sort $ map ( foldl (\acc sym -> acc * 5 + tailCost sym)   0 ) allTails
-  midCost = (!!) costs  (length costs)  `div` 2
-
+  midCost = (!!) costs  ((length costs)  `div` 2)
 
 main :: IO ()
 main = withData "data/Day10.txt" allLines >>= print . (part1 &&& part2)
-

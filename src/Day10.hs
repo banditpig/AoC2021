@@ -104,4 +104,3 @@ part2 inp = midCost   where
 
 main :: IO ()
 main = withData "data/Day10.txt" allLines >>= print . (part1 &&& part2)
-
